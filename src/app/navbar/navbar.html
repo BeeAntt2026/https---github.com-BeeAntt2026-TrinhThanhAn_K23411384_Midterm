@@ -1,0 +1,53 @@
+<!-- PART B: Menu điều hướng theo đề bài -->
+<nav class="navbar">
+  <!-- Logo/Brand -->
+  <div class="nav-brand"> MickeyStore</div>
+
+  <!-- Menu Items -->
+  <div class="nav-menu">
+    <!-- Shopping -->
+    <a [routerLink]="'/shopping'" routerLinkActive="active" class="nav-item">
+      🛍️ Shopping
+    </a>
+
+    <!-- Cart Dropdown -->
+    <div class="nav-dropdown" 
+         (mouseenter)="showCartMenu=true" 
+         (mouseleave)="showCartMenu=false">
+      <span class="nav-item">
+        🛒 Cart
+        <span class="cart-badge" *ngIf="cartService.getCartCount() > 0">
+          {{ cartService.getCartCount() }}
+        </span>
+        <span class="dropdown-arrow">▼</span>
+      </span>
+      <div class="dropdown-menu" *ngIf="showCartMenu">
+        <a [routerLink]="'/current-cart'" class="dropdown-item"
+           [class.disabled]="!authService.isCustomer()"
+           (click)="!authService.isCustomer() ? $event.preventDefault() : null">
+          📦 Current Cart
+        </a>
+        <a [routerLink]="'/revenue'" class="dropdown-item"
+           [class.disabled]="!authService.isEmployee()"
+           (click)="!authService.isEmployee() ? $event.preventDefault() : null">
+          📊 Revenue Statistics
+        </a>
+      </div>
+    </div>
+  </div>
+
+  <!-- Q13: Welcome X hoặc Login -->
+  <div class="nav-auth">
+    <ng-container *ngIf="!authService.isLoggedIn()">
+      <a [routerLink]="'/login'" class="btn-login">🔐 Login</a>
+    </ng-container>
+    <ng-container *ngIf="authService.isLoggedIn()">
+      <span class="welcome-text">
+        Welcome, 
+        <span class="username" (click)="onLogout()" title="Click để đăng xuất">
+          {{ authService.getUserName() }} ✕
+        </span>
+      </span>
+    </ng-container>
+  </div>
+</nav>

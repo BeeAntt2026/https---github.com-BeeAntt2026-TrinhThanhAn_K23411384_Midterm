@@ -1,0 +1,150 @@
+/* ============================================
+   WRAPPER – toàn bộ trang
+   ============================================ */
+* { box-sizing: border-box; }
+
+.page-wrapper {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;          /* chiếm đúng 1 màn hình */
+  overflow: hidden;
+  font-family: 'Segoe UI', Tahoma, sans-serif;
+}
+
+/* ============================================
+   VÙNG C – Menu / Navbar (trên cùng)
+   ============================================ */
+.zone-c {
+  background: linear-gradient(90deg, #0f0c29, #302b63, #24243e);
+  border-bottom: 3px solid #e94560;
+  padding-top: 10px;
+  padding-bottom: 10px;
+  flex-shrink: 0;         /* không co lại */
+}
+
+.nav-btn {
+  color: #d0d0e8 !important;
+  border-radius: 6px;
+  padding: 6px 14px !important;
+  font-weight: 600;
+  font-size: 0.9rem;
+  transition: all 0.2s;
+}
+
+.nav-btn:hover {
+  background-color: rgba(255,255,255,0.12) !important;
+  color: #ffffff !important;
+}
+
+.nav-btn-active {
+  background-color: #e94560 !important;
+  color: #ffffff !important;
+}
+
+/* ============================================
+   DROPDOWN HOVER - Menu xổ xuống khi hover
+   ============================================ */
+.nav-item.dropdown:hover > .dropdown-menu {
+  display: block;
+  margin-top: 0;
+}
+
+.dropdown-menu {
+  border-radius: 8px;
+  border: none;
+  box-shadow: 0 4px 20px rgba(0,0,0,0.3);
+  padding: 8px 0;
+  min-width: 180px;
+}
+
+.dropdown-menu-dark {
+  background: linear-gradient(135deg, #302b63, #24243e);
+}
+
+.dropdown-item {
+  padding: 10px 16px;
+  font-size: 0.9rem;
+  transition: all 0.2s;
+}
+
+.dropdown-item:hover {
+  background: rgba(233, 69, 96, 0.3) !important;
+}
+
+/* ============================================
+   BODY – D (trái lớn) + A (phải nhỏ)
+   ============================================ */
+.zone-body {
+  display: flex;
+  flex: 1;                /* chiếm hết không gian còn lại */
+  overflow: hidden;
+}
+
+/* VÙNG D – Nội dung chính (router-outlet) */
+.zone-d {
+  flex: 1;                /* chiếm hầu hết chiều rộng */
+  overflow-y: auto;       /* scroll nếu nội dung dài */
+  background-color: #f4f6fb;
+  padding: 0;
+}
+
+/* VÙNG A – Thông tin sinh viên (cột phải, nhỏ) */
+.zone-a {
+  width: 160px;
+  min-width: 150px;
+  flex-shrink: 0;
+  background: linear-gradient(180deg, #e8eaf6 0%, #c5cae9 100%);
+  border-left: 2px solid #9fa8da;
+  padding: 10px 6px;
+  overflow: hidden;
+}
+
+/* ============================================
+   VÙNG B – Login / Welcome (dưới cùng)
+   ============================================ */
+.zone-b {
+  background: linear-gradient(90deg, #0f0c29, #302b63, #24243e);
+  border-top: 3px solid #e94560;
+  padding-top: 10px;
+  padding-bottom: 10px;
+  flex-shrink: 0;
+  min-height: 52px;
+  display: flex;
+  align-items: center;
+}
+
+.welcome-badge {
+  background-color: rgba(255, 255, 255, 0.12);
+  color: #fff;
+  padding: 6px 14px;
+  border-radius: 20px;
+  font-size: 0.92rem;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  border: 1px solid rgba(255,255,255,0.2);
+}
+
+.role-tag {
+  background-color: #e94560;
+  color: white;
+  font-size: 0.72rem;
+  padding: 2px 8px;
+  border-radius: 10px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.customer-tag {
+  background-color: #4caf50;
+}
+
+/* ============================================
+   RESPONSIVE (mobile)
+   ============================================ */
+@media (max-width: 768px) {
+  .zone-body    { flex-direction: column-reverse; }
+  .zone-a       { width: 100%; border-left: none;
+                  border-bottom: 2px solid #9fa8da; }
+}

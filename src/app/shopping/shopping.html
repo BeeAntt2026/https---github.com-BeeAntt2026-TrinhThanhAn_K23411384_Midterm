@@ -1,0 +1,94 @@
+<!-- PART C: Shopping Page -->
+<!-- Q7: Display all products with nice UI -->
+<!-- Q8: Search products by price -->
+<!-- Q9: BUY button with quantity -->
+
+<div class="shopping-container">
+  <div class="page-header">
+    <h1>🛍️ Mickey Shop</h1>
+    <p class="subtitle">Khám phá các sản phẩm tuyệt vời của chúng tôi</p>
+  </div>
+
+  <!-- Q8 & Q9: Thanh tìm kiếm theo giá và Category -->
+  <div class="search-section">
+    <div class="search-box">
+      <!-- Q8: Lọc theo giá -->
+      <span class="search-label">💰 Giá:</span>
+      <div class="price-inputs">
+        <input type="number" [(ngModel)]="minPrice" placeholder="Từ $" class="price-input">
+        <span class="separator">→</span>
+        <input type="number" [(ngModel)]="maxPrice" placeholder="Đến $" class="price-input">
+      </div>
+      
+      <!-- Q9: Dropdown Category -->
+      <span class="search-label">📂 Danh mục:</span>
+      <select [(ngModel)]="selectedCategory" (change)="onCategoryChange()" class="category-select">
+        <option value="">-- Tất cả --</option>
+        <option *ngFor="let cat of categories" [value]="cat.categoryName">
+          {{ cat.categoryName }}
+        </option>
+      </select>
+
+      <button (click)="onSearch()" class="btn-search">🔍 Tìm kiếm</button>
+      <button (click)="onReset()" class="btn-reset">↺ Reset</button>
+    </div>
+    <div class="result-info">
+      Tìm thấy <strong>{{ filteredProducts.length }}</strong> sản phẩm
+    </div>
+  </div>
+
+  <!-- Error message -->
+  <div class="error-box" *ngIf="errMessage">
+    ⚠️ {{ errMessage }}
+  </div>
+
+  <!-- Q7: Product Grid với UI đẹp -->
+  <div class="product-grid">
+    <div class="product-card" *ngFor="let p of filteredProducts">
+      <!-- Hiển thị hình ảnh từ assets -->
+      <div class="product-image">
+        <img [src]="'assets/' + p.imageUrl" 
+             [alt]="p.productName"
+             class="product-img"
+             onerror="this.src='assets/avatar.jpg'">
+        <span class="category-tag">{{ p.categoryName }}</span>
+      </div>
+
+      <!-- Info -->
+      <div class="product-info">
+        <h3 class="product-name">{{ p.productName }}</h3>
+        <p class="product-meta">{{ p.model }} • {{ p.made }}</p>
+        <p class="product-desc">{{ p.description }}</p>
+        
+        <div class="product-footer">
+          <div class="price-stock">
+            <span class="price">${{ p.price | number:'1.2-2' }}</span>
+            <span class="stock" [class.low-stock]="p.quantity < 5">
+              {{ p.quantity > 0 ? 'Còn ' + p.quantity : 'Hết hàng' }}
+            </span>
+          </div>
+
+          <!-- Q9: BUY section - chỉ hiện khi còn hàng -->
+          <div class="buy-section" *ngIf="p.quantity > 0">
+            <input type="number" 
+                   [(ngModel)]="buyQuantity[p._id]"
+                   min="1" 
+                   [max]="p.quantity" 
+                   class="qty-input"
+                   placeholder="SL">
+            <button (click)="onBuy(p)" class="btn-buy">
+              🛒 Mua
+            </button>
+          </div>
+          <span class="out-of-stock" *ngIf="p.quantity <= 0">Hết hàng</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Empty state -->
+  <div class="empty-state" *ngIf="filteredProducts.length === 0 && !errMessage">
+    <p>😢 Không tìm thấy sản phẩm nào</p>
+    <button (click)="onReset()" class="btn-reset">Xem tất cả sản phẩm</button>
+  </div>
+</div>

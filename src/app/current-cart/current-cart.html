@@ -1,0 +1,102 @@
+<!-- Q10 & Q11: Current Cart - Quản lý giỏ hàng (Chỉ dành cho Customer) -->
+<div class="cart-container">
+  <div class="cart-header">
+    <h1>🛒 Giỏ hàng của bạn</h1>
+  </div>
+
+  <!-- Thanh toán thành công -->
+  <div class="success-box" *ngIf="paymentDone">
+    <div class="success-icon">✅</div>
+    <h2>Thanh toán thành công!</h2>
+    <p>Cảm ơn bạn đã mua hàng tại PandaStore</p>
+    <a [routerLink]="'/shopping'" class="btn-continue">← Tiếp tục mua sắm</a>
+  </div>
+
+  <!-- Chưa đăng nhập -->
+  <div class="warning-box" *ngIf="!authService.isLoggedIn() && !paymentDone">
+    <div class="warning-icon">🔐</div>
+    <h2>Vui lòng đăng nhập</h2>
+    <p>Bạn cần đăng nhập với tài khoản Customer để xem giỏ hàng</p>
+    <a [routerLink]="'/login'" class="btn-login">Đăng nhập ngay</a>
+  </div>
+
+  <!-- Không phải Customer -->
+  <div class="warning-box" *ngIf="authService.isLoggedIn() && !authService.isCustomer() && !paymentDone">
+    <div class="warning-icon">🚫</div>
+    <h2>Không có quyền truy cập</h2>
+    <p>Chức năng này chỉ dành cho <strong>Customer</strong></p>
+    <a [routerLink]="'/shopping'" class="btn-shop">Quay lại trang sản phẩm</a>
+  </div>
+
+  <!-- Giỏ hàng trống -->
+  <div class="empty-box" 
+       *ngIf="authService.isCustomer() && cartService.getCart().length === 0 && !paymentDone">
+    <div class="empty-icon">🛒</div>
+    <h2>Giỏ hàng trống</h2>
+    <p>Hãy thêm sản phẩm vào giỏ hàng của bạn</p>
+    <a [routerLink]="'/shopping'" class="btn-shop">Đi mua sắm</a>
+  </div>
+
+  <!-- Bảng giỏ hàng (Q11: Customer có thể update cart) -->
+  <div class="cart-content" 
+       *ngIf="authService.isCustomer() && cartService.getCart().length > 0 && !paymentDone">
+    
+    <table class="cart-table">
+      <thead>
+        <tr>
+          <th>Sản phẩm</th>
+          <th>Đơn giá</th>
+          <th>Số lượng</th>
+          <th>Thành tiền</th>
+          <th>Thao tác</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let item of cartService.getCart()">
+          <td class="product-cell">
+            <span class="product-name">{{ item.product.productName }}</span>
+            <span class="product-meta">{{ item.product.model }}</span>
+          </td>
+          <td class="price-cell">${{ item.product.price | number:'1.2-2' }}</td>
+          <!-- Q10: Thay đổi số lượng -->
+          <td class="qty-cell">
+            <div class="qty-controls">
+              <button class="qty-btn" (click)="onDecrease(item.product._id)">−</button>
+              <input type="number" 
+                     [value]="item.quantity" 
+                     min="1"
+                     (change)="onUpdateQty(item.product._id, $event)"
+                     class="qty-input">
+              <button class="qty-btn" (click)="onIncrease(item.product._id)">+</button>
+            </div>
+          </td>
+          <td class="subtotal-cell">${{ item.subtotal | number:'1.2-2' }}</td>
+          <!-- Q10: Xóa sản phẩm -->
+          <td class="action-cell">
+            <button (click)="onRemove(item.product._id)" class="btn-remove" title="Xóa">
+              🗑️
+            </button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+
+    <!-- Footer: Tổng tiền và Thanh toán -->
+    <div class="cart-footer">
+      <div class="cart-summary">
+        <div class="summary-row">
+          <span>Số lượng sản phẩm:</span>
+          <span>{{ cartService.getCartCount() }}</span>
+        </div>
+        <div class="summary-row total">
+          <span>Tổng cộng:</span>
+          <span class="total-amount">${{ cartService.getTotal() | number:'1.2-2' }}</span>
+        </div>
+      </div>
+      <!-- Q10: Thanh toán -->
+      <button (click)="onCheckout()" class="btn-checkout">
+        💳 Thanh toán ngay
+      </button>
+    </div>
+  </div>
+</div>

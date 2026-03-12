@@ -1,0 +1,80 @@
+<!-- Q11: Revenue Statistics - Employee Only -->
+<div class="revenue-container">
+
+  <!-- Chặn nếu không phải Employee -->
+  <div class="access-denied" *ngIf="!authService.isEmployee()">
+    <div class="denied-icon">🔒</div>
+    <h2>Truy cập bị từ chối</h2>
+    <p>Chức năng này chỉ dành cho <strong>Employee</strong></p>
+    <a [routerLink]="'/login'" class="btn-login">Đăng nhập với tài khoản Employee</a>
+  </div>
+
+  <div class="revenue-content" *ngIf="authService.isEmployee()">
+    <div class="page-header">
+      <h1>📊 Thống kê Doanh thu</h1>
+    </div>
+
+    <!-- Tổng doanh thu Card -->
+    <div class="total-card">
+      <div class="card-info">
+        <span class="card-label">💰 Tổng doanh thu</span>
+        <span class="card-value">${{ totalRevenue | number:'1.2-2' }}</span>
+      </div>
+      <div class="card-icon">📈</div>
+    </div>
+
+    <!-- Filter Bar -->
+    <div class="filter-bar">
+      <div class="filter-group">
+        <label>🗓️ Năm:</label>
+        <select [(ngModel)]="filterYear" (change)="onFilterYear()" class="year-select">
+          <option value="">-- Tất cả --</option>
+          <option *ngFor="let y of years" [value]="y">{{ y }}</option>
+        </select>
+      </div>
+      <div class="filter-group">
+        <label>📅 Tháng:</label>
+        <select [(ngModel)]="filterMonth" (change)="onFilterMonth()" class="month-select">
+          <option value="">-- Tất cả --</option>
+          <option *ngFor="let m of months" [value]="m.value">{{ m.label }}</option>
+        </select>
+      </div>
+      <button (click)="onReset()" class="btn-reset">↺ Vui lòng click Reset</button>
+      <div class="stats-info">
+        <span class="order-count">{{ filteredOrders.length }} đơn hàng</span>
+      </div>
+    </div>
+
+    <!-- Bảng chi tiết -->
+    <div class="table-wrapper">
+      <table class="revenue-table">
+        <thead>
+          <tr>
+            <th>#</th>
+            <th>Khách hàng</th>
+            <th>Ngày đặt</th>
+            <th>Phương thức TT</th>
+            <th>Giá trị đơn</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let order of filteredOrders; let i = index">
+            <td class="cell-index">{{ i + 1 }}</td>
+            <td class="cell-name">{{ order.customerName }}</td>
+            <td class="cell-date">{{ order.orderDate | date:'dd/MM/yyyy' }}</td>
+            <td class="cell-payment">
+              <span class="payment-badge">{{ order.paymentMethod }}</span>
+            </td>
+            <td class="cell-amount">${{ order.totalAmount | number:'1.2-2' }}</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    
+    <!-- No Data -->
+    <div class="no-data" *ngIf="filteredOrders.length === 0">
+      <span class="no-data-icon">📭</span>
+      <p>Không có dữ liệu doanh thu</p>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,38 @@
+{
+  "/products": {
+    "target": "http://localhost:3004",
+    "secure": false,
+    "changeOrigin": true,
+    "logLevel": "debug"
+  },
+  "/categories": {
+    "target": "http://localhost:3004",
+    "secure": false,
+    "changeOrigin": true,
+    "logLevel": "debug"
+  },
+  "/customers": {
+    "target": "http://localhost:3004",
+    "secure": false,
+    "changeOrigin": true,
+    "logLevel": "debug"
+  },
+  "/employees": {
+    "target": "http://localhost:3004",
+    "secure": false,
+    "changeOrigin": true,
+    "logLevel": "debug"
+  },
+  "/orders": {
+    "target": "http://localhost:3004",
+    "secure": false,
+    "changeOrigin": true,
+    "logLevel": "debug"
+  },
+  "/orderdetails": {
+    "target": "http://localhost:3004",
+    "secure": false,
+    "changeOrigin": true,
+    "logLevel": "debug"
+  }
+}

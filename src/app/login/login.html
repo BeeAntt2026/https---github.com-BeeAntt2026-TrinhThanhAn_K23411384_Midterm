@@ -1,0 +1,72 @@
+<div class="login-wrapper">
+  <div class="login-container">
+    <!-- Logo / Header -->
+    <div class="login-header">
+      <h1>Đăng nhập</h1>
+      <p>Đăng nhập để tiếp tục</p>
+    </div>
+
+    <!-- Account Type Selection -->
+    <div class="account-type">
+      <label class="type-option" [class.active]="loginType === 'customer'" [class.disabled]="isLoading">
+        <input type="radio" [(ngModel)]="loginType" value="customer" [disabled]="isLoading">
+        <span class="type-icon">👤</span>
+        <span class="type-label">Customer</span>
+      </label>
+      <label class="type-option" [class.active]="loginType === 'employee'" [class.disabled]="isLoading">
+        <input type="radio" [(ngModel)]="loginType" value="employee" [disabled]="isLoading">
+        <span class="type-icon">👨‍💼</span>
+        <span class="type-label">Employee</span>
+      </label>
+    </div>
+
+    <!-- Login Form -->
+    <div class="login-form">
+      <div class="form-group">
+        <label>📧 Email</label>
+        <input type="email" 
+               [(ngModel)]="email" 
+               placeholder="Nhập địa chỉ email" 
+               class="form-input"
+               [disabled]="isLoading"
+               [attr.aria-busy]="isLoading">
+      </div>
+
+      <div class="form-group">
+        <label>🔑 Mật khẩu</label>
+        <input type="password" 
+               [(ngModel)]="password" 
+               placeholder="Nhập mật khẩu" 
+               class="form-input"
+               [disabled]="isLoading"
+               [attr.aria-busy]="isLoading"
+               (keyup.enter)="!isLoading && onLogin()">
+      </div>
+
+      <!-- Error Message -->
+      <div class="error-box" *ngIf="errMessage && !isLoading">
+        <span>❌</span> {{ errMessage }}
+      </div>
+
+      <!-- Loading Message -->
+      <div class="loading-box" *ngIf="isLoading">
+        <span class="spinner">⏳</span> Đang đăng nhập...
+      </div>
+
+      <!-- Login Button -->
+      <button (click)="onLogin()" 
+              class="btn-login" 
+              [disabled]="isLoading"
+              [class.loading]="isLoading">
+        <span *ngIf="!isLoading">🚀 Đăng nhập</span>
+        <span *ngIf="isLoading">⏳ Đang xử lý...</span>
+      </button>
+    </div>
+
+    <!-- Footer hint -->
+    <div class="login-footer">
+      <p>Customer: có thể mua hàng và xem giỏ hàng</p>
+      <p>Employee: có thể xem Revenue Statistics </p>
+    </div>
+  </div>
+</div>
